@@ -1,14 +1,12 @@
 backend:
-  name: github-api #netlify-api
-  repo: eljun/spike-collections-records-template
+  name: webriq-api #netlify-api
+  repo: owner/repo
   branch: master
-  endpoint: https://webriq-portal.dev/api/
-  #url: http://localhost:8080
 
 production:
   backend:
-    name: github-api
-    repo: eljun/spike-collections-records-template # Path to your Github repository
+    name: webriq-api
+    repo: owner/repo # Path to your Github repository
     branch: master # Branch to update (master by default)
 
 media_folder: "assets/img/uploads" # Folder where user uploaded files should go
