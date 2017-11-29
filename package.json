@@ -1,14 +1,14 @@
 {
-  "name": "spike-tpl-jekyll",
+  "name": "webriq-starter-template",
   "description": "Base template for latest spike version",
   "version": "0.0.0",
-  "author": "Carrot Creative",
+  "author": "WebriQ",
   "ava": {
     "verbose": "true",
     "serial": "true",
     "files": "test/test.js"
   },
-  "bugs": "https://github.com/static-dev/spike-tpl-jekyll/issues",
+  "bugs": "https://github.com/webriq/webriq-starter-template/issues",
   "devDependencies": {
     "ava": "^0.19.0",
     "os-tmpdir": "^1.0.1",
@@ -17,7 +17,7 @@
     "sprout": "^1.2.1",
     "when": "^3.7.8"
   },
-  "homepage": "https://github.com/static-dev/spike-tpl-jekyll",
+  "homepage": "https://github.com/webriq/webriq-starter-template",
   "keywords": [
     "spike",
     "spike-template",

@@ -3,7 +3,8 @@ const cssStandards = require('spike-css-standards')
 const jsStandards = require('spike-js-standards')
 const pageId = require('spike-page-id')
 const Collections = require('spike-collections')
-const env = process.env.NODE_ENV
+const Records = require('spike-records')
+const env = process.env.SPIKE_ENV
 
 const locals = {}
 const collections = new Collections({
@@ -11,35 +12,49 @@ const collections = new Collections({
   collections: {
     posts: {
       files: 'posts/**',
-      permalinks: Collections.jekyll.date,
-      transform: (l) => {
-        const d = l._path.match(Collections.jekyll.regex)
-        return Object.assign(l, { date: `${d[2]}/${d[3]}/${d[4]}` })
-      },
+      markdownLayout: 'templates/posts/single.html',
       paginate: {
-        perPage: 3,
-        template: 'views/_page_template.sgr',
-        output: (n) => `posts/page${n}.html`
+        perPage: 1,
+        template: 'templates/posts/post.html',
+        output: n => {
+          if (n === 1) {
+            return `posts/index.html`
+          }
+          return `posts/${n}.html`
+        } 
       }
     }
   }
 })
+const records = new Records({
+  addDataTo: locals,
+  site: { file: 'data/site.json' }
+  // one: { file: 'data.json' },
+  // two: { url: 'http://api.carrotcreative.com/staff' },
+  // three: { data: { foo: 'bar' } },
+  // four: {
+  //   graphql: {
+  //     url: 'http://localhost:1234',
+  //     query: 'query { allPosts { title } }',
+  //     variables: 'xxx', // optional
+  //     headers: { authorization: 'Bearer xxx' } // optional
+  //   }
+  // },
+  // five: { callback: myFunc }
+});
 
 module.exports = {
   devtool: 'source-map',
-  matchers: {
-    html: '*(**/)*.sgr',
-    css: '*(**/)*.sss'
-  },
-  ignore: ['**/layout.sgr', '**/_*', '**/.*', 'readme.md', 'yarn.lock'],
+  ignore: ['**/layout.html', '**/_*', '**/.*', 'readme.md', 'yarn.lock'],
   reshape: htmlStandards({
-    locals: (ctx) => { return collections.locals(ctx, Object.assign({ pageId: pageId(ctx) }, locals)) },
+    locals: ctx => {
+      return collections.locals(ctx, Object.assign({ pageId: pageId(ctx) }, locals))
+    },
     minify: env === 'production'
   }),
   postcss: cssStandards({
-    minify: env === 'production',
-    warnForDuplicates: env !== 'production'
+    minify: env === 'production'
   }),
   babel: jsStandards(),
-  plugins: [collections]
+  plugins: [collections, records]
 }
